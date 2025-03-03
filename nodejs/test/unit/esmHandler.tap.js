@@ -5,7 +5,6 @@ const proxyquire = require('proxyquire').noCallThru().noPreserveCache()
 const utils = require('@newrelic/test-utilities')
 
 tap.test('Layer Handler - ESM Function', (t) => {
-  t.autoend()
   let handler
   let helper
   let originalEnv
@@ -18,10 +17,10 @@ tap.test('Layer Handler - ESM Function', (t) => {
 
     helper = utils.TestAgent.makeInstrumented()
 
-    const newrelic = helper.getAgentApi()
+    const newrelic = helper.getAgentApi();
 
-    ;({ handler } = proxyquire('../../index', {
-      'newrelic': newrelic
+    ({ handler } = proxyquire('../../index', {
+      newrelic: newrelic,
     }))
   })
 
@@ -36,8 +35,9 @@ tap.test('Layer Handler - ESM Function', (t) => {
     })
 
     t.equal(typeof handler, 'function', 'handler should be a function')
-    const res = await handler({ key: 'this is a test'}, { functionName: 'testFn'})
+    const res = await handler({ key: 'this is a test' }, { functionName: 'testFn' })
     t.same(res, { statusCode: 200, body: 'response body this is a test' }, 'response should be correct')
     t.end()
   })
+  t.end()
 })
